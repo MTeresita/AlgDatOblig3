@@ -107,12 +107,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
   public int antall(T verdi) {
-    /*
-    - Skal returnere antall forekomster av verdi i treet.
-    - Tillatt med duplikater (en verdi kan forekomme flere ganger)
-    - Hvis verdi ikke er i treet (null er ikke i treet) - metoden returnerer 0
-     */
-
     int forekomst = 0; // hjelpe variabel for å telle antall forekomst
     Node<T> node = rot; // oppretter en ny node fra roten
 
@@ -120,18 +114,22 @@ public class ObligSBinTre<T> implements Beholder<T> {
       if (inneholder(verdi)) {
 
         while (node != null) {
+
           int cmp = comp.compare(verdi, node.verdi); // bruker comparator for å sammenligne verdien med node sin verdi
 
           if (cmp < 0) {
             node = node.venstre;
           }
-          else if(cmp == 0) {
-              forekomst++;
-              node = node.høyre;
+          else {
+            if (cmp == 0) {
+              forekomst ++;
+            }
+            node = node.høyre;
           }
         }
       }
-    return forekomst; //returnere antall forekomster av verdi i treet.
+    return forekomst; //returnerer antall forekomst av verdi i treet.
+
   }
 
   

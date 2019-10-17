@@ -4,29 +4,28 @@ package no.oslomet.cs.algdat.Oblig3;
 
 import java.util.*;
 
-public class ObligSBinTre<T> implements Beholder<T>
-{
-  private static final class Node<T>   // en indre nodeklasse
-  {
+public class ObligSBinTre<T> implements Beholder<T> {
+  private static final class Node<T>  {  // en indre nodeklasse
+
     private T verdi;                   // nodens verdi
     private Node<T> venstre, høyre;    // venstre og høyre barn
     private Node<T> forelder;          // forelder
 
     // konstruktør
-    private Node(T verdi, Node<T> v, Node<T> h, Node<T> forelder)
-    {
+    private Node(T verdi, Node<T> v, Node<T> h, Node<T> forelder) {
       this.verdi = verdi;
       venstre = v; høyre = h;
       this.forelder = forelder;
     }
 
-    private Node(T verdi, Node<T> forelder)  // konstruktør
-    {
+    private Node(T verdi, Node<T> forelder) { // konstruktør
+
       this(verdi, null, null, forelder);
     }
 
     @Override
-    public String toString(){ return "" + verdi;}
+    public String toString(){
+      return "" + verdi;}
 
   } // class Node
 
@@ -44,9 +43,36 @@ public class ObligSBinTre<T> implements Beholder<T>
   }
   
   @Override
-  public boolean leggInn(T verdi)
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  public boolean leggInn(T verdi) {
+    Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
+
+    Node<T> p = rot, q = null;               // p starter i roten
+    int cmp = 0;                             // hjelpevariabel
+
+    while (p != null) {    // fortsetter til p er ute av treet
+
+      q = p;                                 // q er forelder til p
+      cmp = comp.compare(verdi,p.verdi);     // bruker komparatoren
+      p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
+    }
+
+    // p er nå null, dvs. ute av treet, q er den siste vi passerte
+
+    p = new Node<>(verdi,q); // oppretter en ny node. p = null, q er forelder.
+
+    if (q == null) {
+      rot = p; // p blir rotnode
+    }
+    else if (cmp < 0){
+      q.venstre = p; // venstre barn til q
+    }
+    else {
+      q.høyre = p;  // høyre barn til q
+    }
+
+    antall++;   // én verdi mer i treet
+    endringer++;
+    return true;
   }
   
   @Override
@@ -56,8 +82,7 @@ public class ObligSBinTre<T> implements Beholder<T>
 
     Node<T> p = rot;
 
-    while (p != null)
-    {
+    while (p != null) {
       int cmp = comp.compare(verdi, p.verdi);
       if (cmp < 0) p = p.venstre;
       else if (cmp > 0) p = p.høyre;
@@ -68,88 +93,97 @@ public class ObligSBinTre<T> implements Beholder<T>
   }
   
   @Override
-  public boolean fjern(T verdi)
-  {
+  public boolean fjern(T verdi) {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   
-  public int fjernAlle(T verdi)
-  {
+  public int fjernAlle(T verdi) {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   
   @Override
-  public int antall()
-  {
+  public int antall() {
     return antall;
   }
   
-  public int antall(T verdi)
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  public int antall(T verdi) {
+    /*
+    - Skal returnere antall forekomster av verdi i treet.
+    - Tillatt med duplikater (en verdi kan forekomme flere ganger)
+    - Hvis verdi ikke er i treet (null er ikke i treet) - metoden returnerer 0
+     */
+
+    int forekomst = 0; // hjelpe variabel for å telle antall forekomst
+    Node<T> node = rot; // oppretter en ny node fra roten
+
+      //Hvis verdien finnes
+      if (inneholder(verdi)) {
+
+        while (node != null) {
+          int cmp = comp.compare(verdi, node.verdi); // bruker comparator for å sammenligne verdien med node sin verdi
+
+          if (cmp < 0) {
+            node = node.venstre;
+          }
+          else if(cmp == 0) {
+              forekomst++;
+              node = node.høyre;
+          }
+        }
+      }
+    return forekomst; //returnere antall forekomster av verdi i treet.
   }
+
   
   @Override
-  public boolean tom()
-  {
+  public boolean tom() {
     return antall == 0;
   }
   
   @Override
-  public void nullstill()
-  {
+  public void nullstill() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   
-  private static <T> Node<T> nesteInorden(Node<T> p)
-  {
+  private static <T> Node<T> nesteInorden(Node<T> p) {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+
+  @Override
+  public String toString() {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+  
+  public String omvendtString() {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+  
+  public String høyreGren() {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+  
+  public String lengstGren() {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+  
+  public String[] grener() {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+  
+  public String bladnodeverdier() {
+    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  }
+  
+  public String postString() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
   
   @Override
-  public String toString()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  public String omvendtString()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  public String høyreGren()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  public String lengstGren()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  public String[] grener()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  public String bladnodeverdier()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  public String postString()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
-  @Override
-  public Iterator<T> iterator()
-  {
+  public Iterator<T> iterator() {
     return new BladnodeIterator();
   }
   
-  private class BladnodeIterator implements Iterator<T>
-  {
+  private class BladnodeIterator implements Iterator<T> {
     private Node<T> p = rot, q = null;
     private boolean removeOK = false;
     private int iteratorendringer = endringer;

@@ -132,7 +132,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
   }
 
-  
   @Override
   public boolean tom() {
     return antall == 0;

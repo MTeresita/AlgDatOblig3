@@ -146,7 +146,12 @@ public class ObligSBinTre<T> implements Beholder<T> {
     // privat metode - tas for gitt at p ikke er null
     // må sikre at det ikke er nullreferanse når metoden brukes!
     // returnerer den noden som kommer etter p i inorden
+
+    /* If tester*
     // hvis p er siste i inorden, returner null
+    //Hvis p har et ikke-tomt høyre subtre, så er den neste den noden som kommer først i inorden i det subtreet
+    // Hvis p har et tomt høyre subtre, er den neste den nærmeste noden oppover mot roten som har p i sitt venstre subtre.
+    // Hvis det ikke finnes noen slik node, er p den siste i inorden.
 
   }
 

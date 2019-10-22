@@ -93,12 +93,101 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
   @Override
-  public boolean fjern(T verdi) {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+  public boolean fjern(T verdi){  // hører til klassen SBinTre
+
+      if (verdi == null) return false;  // treet har ingen nullverdier
+
+      Node<T> p = rot, q = null;   // q skal være forelder til p
+
+      while (p != null){            // leter etter verdi
+          int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+
+          if (cmp < 0) { // går til venstre
+              q = p;
+              p = p.venstre;
+          }
+          else if (cmp > 0) {  // går til høyre
+              q = p;
+              p = p.høyre;
+          }
+          else break;    // den søkte verdien ligger i p
+      }
+
+      if (p == null) return false;   // finner ikke verdi
+
+      if (p.venstre == null || p.høyre == null){  // Tilfelle 1) og 2)
+          Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+          if (p == rot) {
+              rot = b;
+              b.forelder = null;
+          }
+          else if (p == q.venstre) {
+              q.venstre = b;
+              b.forelder = q;  //nødvendig??
+          }
+          else {
+              q.høyre = b;
+              b.forelder = q;  //nødvendig??
+          }
+      }
+
+      else{  // Tilfelle 3)
+          Node<T> s = p, r = p.høyre;   // finner neste i inorden
+
+          while (r.venstre != null) {
+              s = r;    // s er forelder til r
+              r = r.venstre;
+          }
+
+          p.verdi = r.verdi;   // kopierer verdien i r til p
+
+          if (s != p) {
+              s.venstre = r.høyre;  // Antar at r.høyre er lik null her
+              s.forelder = p;
+          }
+          else {
+              s.høyre = r.høyre;  // Antar at r.høyre er lik null her
+          }
+      }
+
+      antall--;   // det er nå én node mindre i treet
+      return true;
+
   }
   
   public int fjernAlle(T verdi) {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+      if(tom()){
+        return 0;
+      }
+      else if(antall(verdi) == 0){
+        return 0;
+      }
+
+      int antallFjernet = 0; // hjelpe variabel for å telle antall forekomst
+      Node<T> node = rot; // oppretter en ny node fra roten
+
+      //Hvis verdien finnes
+      if (inneholder(verdi)) {
+
+          while (node != null) {
+
+              int cmp = comp.compare(verdi, node.verdi); // bruker comparator for å sammenligne verdien med node sin verdi
+
+              if (cmp < 0) { // returverdi er negativ hvis mindre
+                  node = node.venstre;
+              }
+              else {
+                  if (cmp == 0) { // returverdi er 0 hvis like
+                      fjern(verdi);  //Fjerner noden når man finner match
+                      antallFjernet++;
+                      antall--;
+                  }
+                  node = node.høyre; // returverdi er større
+              }
+          }
+      }
+      return antallFjernet; //returnerer antall slettede elementer.
+
   }
   
   @Override
@@ -117,10 +206,10 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
           int cmp = comp.compare(verdi, node.verdi); // bruker comparator for å sammenligne verdien med node sin verdi
 
-
           if (cmp < 0) { // returverdi er negativ hvis mindre
             node = node.venstre;
-          } else {
+          }
+          else {
             if (cmp == 0) { // returverdi er 0 hvis like
               forekomst++;
             }
@@ -139,8 +228,28 @@ public class ObligSBinTre<T> implements Beholder<T> {
   
   @Override
   public void nullstill() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if(antall == 1){
+      rot = null;
+    }
+    else {
+      postOrdenFjern(rot);
+      rot = null;
+    }
+    endringer++;
   }
+
+  private void postOrdenFjern(Node<T> p){
+    if(p.venstre != null) {
+      postOrdenFjern(p.venstre);
+      p.venstre = null;
+    }
+    if(p.høyre != null) {
+      postOrdenFjern(p.høyre);
+      p.høyre = null;
+    }
+    p.verdi = null;
+  }
+
   
   private static <T> Node<T> nesteInorden(Node<T> p) {
     throw new UnsupportedOperationException("Ikke kodet ennå!");

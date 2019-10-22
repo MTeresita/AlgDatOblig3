@@ -22,6 +22,7 @@ public class Main {
             tre.leggInn(verdi);
         }
 
+        // Forekomster av antall verdier i listen
         System.out.println(tre.antall());         //Utskrift: 10
         System.out.println(tre.antall(5));  //Utskrift: 0
         System.out.println(tre.antall(4));  //Utskrift: 3

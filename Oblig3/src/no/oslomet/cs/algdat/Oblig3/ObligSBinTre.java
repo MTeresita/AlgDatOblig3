@@ -117,15 +117,14 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
           int cmp = comp.compare(verdi, node.verdi); // bruker comparator for å sammenligne verdien med node sin verdi
 
-          if (cmp < 0) {
+
+          if (cmp < 0) { // returverdi er negativ hvis mindre
             node = node.venstre;
           }
-          else {
-            if (cmp == 0) {
+          else if(cmp == 0) { // returverdi er 0 hvis like
               forekomst ++;
             }
-            node = node.høyre;
-          }
+            node = node.høyre; // returverdi er større
         }
       }
     return forekomst; //returnerer antall forekomst av verdi i treet.
@@ -144,6 +143,11 @@ public class ObligSBinTre<T> implements Beholder<T> {
   
   private static <T> Node<T> nesteInorden(Node<T> p) {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
+    // privat metode - tas for gitt at p ikke er null
+    // må sikre at det ikke er nullreferanse når metoden brukes!
+    // returnerer den noden som kommer etter p i inorden
+    // hvis p er siste i inorden, returner null
+
   }
 
   @Override

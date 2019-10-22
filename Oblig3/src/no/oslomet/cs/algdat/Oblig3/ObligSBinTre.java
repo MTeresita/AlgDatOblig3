@@ -141,24 +141,62 @@ public class ObligSBinTre<T> implements Beholder<T> {
   public void nullstill() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
-  
+
   private static <T> Node<T> nesteInorden(Node<T> p) {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
     // privat metode - tas for gitt at p ikke er null
     // må sikre at det ikke er nullreferanse når metoden brukes!
     // returnerer den noden som kommer etter p i inorden
 
-    /* If tester */
-    // hvis p er siste i inorden, returner null
-    // Hvis p har et ikke-tomt høyre subtre, så er den neste den noden som kommer først i inorden i det subtreet
-    // Hvis p har et tomt høyre subtre, er den neste den nærmeste noden oppover mot roten som har p i sitt venstre subtre.
-    // Hvis det ikke finnes noen slik node, er p den siste i inorden.
 
+    // hvis p er siste i inorden, returner null
+    if(p.høyre == null){ //FIXME: ikke ferdig!!!
+      return null;
+    }
+    // Hvis p har et høyre subtre, da vil den neste i inorden være den noden som ligger lengst ned til venstre i det subtreet
+    else if(p.høyre != null){
+      p = p.høyre; // hopper til høyre subtre
+      while(p.venstre != null){ // hopper nedover i venstre subtre hvis det eksisterer
+        p = p.venstre;
+      }
+    }
+    // Hvis p ikke har et høyre subtre og p ikke er den siste i inorden, da vil den neste i inorden være høyere opp i treet
+    else if(p.høyre == null){
+      while(p == p.forelder.høyre) { // sørger for at
+        p = p.forelder;
+      }
+      if(p.forelder != null){ // sjekk om p har en forelder, ettersom den ikke er høyre barn må den være venstre barn
+         p = p.forelder;
+      }
+    }
+
+    return p;
   }
 
   @Override
   public String toString() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    // husk å sjekke om p har nullverdier
+    if(tom()){
+      return "[]";
+    }
+    Node<T> p = rot;
+    // returnere en tegnstreng med treets verdier i inorden. skal rammes inn i []
+    StringBuilder sb = new StringBuilder();
+    sb.append("["); // starter stringen til SB
+    // mellom verdiene skal det være komma og mellomrom / et tomt tre: []
+    // start med å finne den første noden p i inorden.
+    // deretter (while-løkke f.eks) p = nesteInorden(p) gi den neste osv til p blir null
+    while (p.venstre != null){
+      p = p.venstre;
+    }
+    sb.append(p.verdi).append(", ");
+
+    while(nesteInorden(p) != null){
+      p = nesteInorden(p);
+      sb.append(p.verdi).append(", ");
+    }
+
+    sb.append("]"); // avslutter toStringen til SB.
+    return sb.toString();
   }
   
   public String omvendtString() {

@@ -120,11 +120,12 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
           if (cmp < 0) { // returverdi er negativ hvis mindre
             node = node.venstre;
-          }
-          else if(cmp == 0) { // returverdi er 0 hvis like
-              forekomst ++;
+          } else {
+            if (cmp == 0) { // returverdi er 0 hvis like
+              forekomst++;
             }
             node = node.høyre; // returverdi er større
+          }
         }
       }
     return forekomst; //returnerer antall forekomst av verdi i treet.
@@ -147,9 +148,9 @@ public class ObligSBinTre<T> implements Beholder<T> {
     // må sikre at det ikke er nullreferanse når metoden brukes!
     // returnerer den noden som kommer etter p i inorden
 
-    /* If tester*
+    /* If tester */
     // hvis p er siste i inorden, returner null
-    //Hvis p har et ikke-tomt høyre subtre, så er den neste den noden som kommer først i inorden i det subtreet
+    // Hvis p har et ikke-tomt høyre subtre, så er den neste den noden som kommer først i inorden i det subtreet
     // Hvis p har et tomt høyre subtre, er den neste den nærmeste noden oppover mot roten som har p i sitt venstre subtre.
     // Hvis det ikke finnes noen slik node, er p den siste i inorden.
 

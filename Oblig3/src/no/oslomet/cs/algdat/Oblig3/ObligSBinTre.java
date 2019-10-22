@@ -117,17 +117,18 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
       if (p.venstre == null || p.høyre == null){  // Tilfelle 1) og 2)
           Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+
+          if(b != null){
+            b.forelder = q;
+          }
           if (p == rot) {
               rot = b;
-              b.forelder = null;
           }
           else if (p == q.venstre) {
               q.venstre = b;
-              b.forelder = q;  //nødvendig??
           }
           else {
               q.høyre = b;
-              b.forelder = q;  //nødvendig??
           }
       }
 
@@ -223,31 +224,30 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
   @Override
   public boolean tom() {
-    return antall == 0;
+      return antall == 0;
   }
   
   @Override
   public void nullstill() {
-    if(antall == 1){
-      rot = null;
-    }
-    else {
-      postOrdenFjern(rot);
-      rot = null;
-    }
-    endringer++;
+      if(!tom()) {
+          postOrdenFjern(rot);
+          rot = null;
+          antall = 0;
+          endringer++;
+      }
   }
 
+  //Traverserer igjennom alle elementene rekursivt via postorden og sletter dem
   private void postOrdenFjern(Node<T> p){
-    if(p.venstre != null) {
-      postOrdenFjern(p.venstre);
-      p.venstre = null;
-    }
-    if(p.høyre != null) {
-      postOrdenFjern(p.høyre);
-      p.høyre = null;
-    }
-    p.verdi = null;
+      if(p.venstre != null) {
+          postOrdenFjern(p.venstre);
+          p.venstre = null;
+      }
+      if(p.høyre != null) {
+          postOrdenFjern(p.høyre);
+          p.høyre = null;
+      }
+      p.verdi = null;
   }
 
   

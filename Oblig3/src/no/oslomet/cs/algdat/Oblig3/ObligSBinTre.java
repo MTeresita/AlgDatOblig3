@@ -182,19 +182,25 @@ public class ObligSBinTre<T> implements Beholder<T> {
     // deretter (while-løkke f.eks) p = nesteInorden(p) gi den neste osv til p blir null
     Node<T> p = rot;
 
-    while(p.venstre != null){
-      p = p.venstre;
+    if(p.venstre == null && p.høyre == null){
+      sb.append(p.verdi);
     }
-    sb.append(p.verdi).append(", ");
-
-    while(nesteInorden(p) != null) {
-      p = nesteInorden(p);
-      sb.append(p);
-      if(nesteInorden(p) == null){
-        break;
+    else{
+      while(p.venstre != null){
+        p = p.venstre;
       }
-      sb.append(", ");
+      sb.append(p.verdi).append(", ");
 
+
+      while(nesteInorden(p) != null) {
+        p = nesteInorden(p);
+        sb.append(p);
+
+        if (nesteInorden(p) == null) {
+          break;
+        }
+        sb.append(", ");
+      }
     }
 
     sb.append("]"); // avslutter toStringen til SB.

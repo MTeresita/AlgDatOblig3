@@ -188,8 +188,13 @@ public class ObligSBinTre<T> implements Beholder<T> {
     sb.append(p.verdi).append(", ");
 
     while(nesteInorden(p) != null) {
-        sb.append(nesteInorden(p).verdi).append(", ");
-        p = nesteInorden(p);
+      p = nesteInorden(p);
+      sb.append(p);
+      if(nesteInorden(p) == null){
+        break;
+      }
+      sb.append(", ");
+
     }
 
     sb.append("]"); // avslutter toStringen til SB.

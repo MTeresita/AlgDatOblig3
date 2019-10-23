@@ -148,25 +148,20 @@ public class ObligSBinTre<T> implements Beholder<T> {
     // returnerer den noden som kommer etter p i inorden
 
 
-    // hvis p er siste i inorden, returner null
-    if(p.høyre == null){ //FIXME: ikke ferdig!!!
-      return null;
-    }
+
     // Hvis p har et høyre subtre, da vil den neste i inorden være den noden som ligger lengst ned til venstre i det subtreet
-    else if(p.høyre != null){
-      p = p.høyre; // hopper til høyre subtre
+      if(p.høyre != null){
+         p = p.høyre; // hopper til høyre subtre
       while(p.venstre != null){ // hopper nedover i venstre subtre hvis det eksisterer
         p = p.venstre;
       }
     }
     // Hvis p ikke har et høyre subtre og p ikke er den siste i inorden, da vil den neste i inorden være høyere opp i treet
-    else if(p.høyre == null){
-      while(p == p.forelder.høyre) { // sørger for at
+    else {
+      while(p.forelder != null && p == p.forelder.høyre){
         p = p.forelder;
       }
-      if(p.forelder != null){ // sjekk om p har en forelder, ettersom den ikke er høyre barn må den være venstre barn
-         p = p.forelder;
-      }
+      p = p.forelder;
     }
 
     return p;
@@ -175,28 +170,43 @@ public class ObligSBinTre<T> implements Beholder<T> {
   @Override
   public String toString() {
     // husk å sjekke om p har nullverdier
-    if(tom()){
+    if (tom()) {
       return "[]";
     }
-    Node<T> p = rot;
+
     // returnere en tegnstreng med treets verdier i inorden. skal rammes inn i []
     StringBuilder sb = new StringBuilder();
     sb.append("["); // starter stringen til SB
     // mellom verdiene skal det være komma og mellomrom / et tomt tre: []
     // start med å finne den første noden p i inorden.
     // deretter (while-løkke f.eks) p = nesteInorden(p) gi den neste osv til p blir null
-    while (p.venstre != null){
+    Node<T> p = rot;
+
+    while(p.venstre != null){
       p = p.venstre;
     }
     sb.append(p.verdi).append(", ");
 
-    while(nesteInorden(p) != null){
-      p = nesteInorden(p);
-      sb.append(p.verdi).append(", ");
+    while(nesteInorden(p) != null) {
+        sb.append(nesteInorden(p).verdi).append(", ");
+        p = nesteInorden(p);
     }
 
     sb.append("]"); // avslutter toStringen til SB.
     return sb.toString();
+
+    /*
+    while (p.venstre != null) {
+      p = p.venstre;
+    }
+
+    while (p != null) {
+      sb.append(p.verdi).append(", ");
+      p = nesteInorden(p);
+    }
+    sb.append("]"); // avslutter toStringen til SB.
+    return sb.toString();
+    */
   }
   
   public String omvendtString() {

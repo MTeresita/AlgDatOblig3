@@ -230,7 +230,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
   @Override
   public void nullstill() {
       if(!tom()) {
-          postOrdenFjern(rot);
+          postOrdenNullstill(rot);
           rot = null;
           antall = 0;
           endringer++;
@@ -238,13 +238,13 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
 
   //Traverserer igjennom alle elementene rekursivt via postorden og sletter dem
-  private void postOrdenFjern(Node<T> p){
+  private void postOrdenNullstill(Node<T> p){
       if(p.venstre != null) {
-          postOrdenFjern(p.venstre);
+          postOrdenNullstill(p.venstre);
           p.venstre = null;
       }
       if(p.høyre != null) {
-          postOrdenFjern(p.høyre);
+          postOrdenNullstill(p.høyre);
           p.høyre = null;
       }
       p.verdi = null;

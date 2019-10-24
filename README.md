@@ -6,11 +6,13 @@ Oppgaven er levert av følgende studenter:
 * Signe Aanderaa Eide : s333781
 * Camilla Hoelgaard : s333783
 * Ana-Maria Poljac : s333745
+* Christian Dyrli: s333738 
 
 # Arbeidsfordeling
 
 I oppgaven har vi hatt følgende arbeidsfordeling:
-* Maria har jobbet på oppgave 1, 2a, 4, 10
-* Signe har jobbet på oppgave 2a, 2b 3a, 5, 6, 7, 8, 9
-* Camilla har jobbet på oppgave 1, 2a, 2b, 3b, 5, 6, 8, 9
-* Ana-Maria har jobbet på oppgave 1, 2a, 3a, 3b, 8, 9, 10
+* Maria har jobbet på oppgave 1, 2, 3, 4
+* Signe har jobbet på oppgave 5,
+* Camilla har jobbet på oppgave 5,
+* Ana-Maria har jobbet på oppgave 3, 4
+* Christian har jobbet på oppgave 3, 4 

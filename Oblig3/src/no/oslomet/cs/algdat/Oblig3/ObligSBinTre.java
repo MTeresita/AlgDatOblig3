@@ -205,23 +205,57 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
     sb.append("]"); // avslutter toStringen til SB.
     return sb.toString();
-
-    /*
-    while (p.venstre != null) {
-      p = p.venstre;
-    }
-
-    while (p != null) {
-      sb.append(p.verdi).append(", ");
-      p = nesteInorden(p);
-    }
-    sb.append("]"); // avslutter toStringen til SB.
-    return sb.toString();
-    */
   }
   
   public String omvendtString() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if (tom()) {
+      return "[]";
+    }
+
+    Stakk<Node<T>> nodeStakk = new TabellStakk<>();
+    Node<T> p = rot; // starter i roten og går til venstre
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
+
+    // går ned til høyre
+    for (; p.høyre != null; p = p.høyre){
+      nodeStakk.leggInn(p); // legger til verdiene som blir passert i stakken
+      // p er nå lik den siste verdien
+
+    }
+    sb.append(p.verdi);
+
+
+
+    // sjekker om p har venstre barn
+    while (true) {
+      if (p.venstre != null) {
+
+        // venstre barn funnet, p er lik venstre barnet
+        p = p.venstre;
+
+        // sjekker om det finnes et høyre barn, om det fins, så legges det til stakken
+        for (; p.høyre != null; p = p.høyre){
+          nodeStakk.leggInn(p); // legger til verdiene i en stakk.
+        }
+      }
+      // hvis det ikke finnes noe høyre barn, blir den tatt ut av stakken og lagt inn i strengen
+      else if(!nodeStakk.tom()) {
+        p = nodeStakk.taUt(); // p.høyre == null, henter fra stakken
+      }
+
+      else
+        break; // stakken er tom, vi er ferdig
+
+      // hopper ut av løkken og traversering er gjennomført.
+
+      sb.append(", ").append(p.verdi);
+
+    }
+    sb.append("]");
+
+    return sb.toString();
   }
   
   public String høyreGren() {

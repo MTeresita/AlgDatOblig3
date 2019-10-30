@@ -60,5 +60,8 @@ public class Main {
         for(char poop : verdier) tre3.leggInn(poop);
         System.out.println(tre3.høyreGren());
         // Utskrift: [I, T, J, R, S]
+
+        System.out.println(tre3.lengstGren());
+        // Utskrift: [I, A, B, H, C, F, E, D]
     }
 }

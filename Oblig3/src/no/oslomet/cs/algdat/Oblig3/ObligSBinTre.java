@@ -393,13 +393,11 @@ public class ObligSBinTre<T> implements Beholder<T> {
       else if (p.høyre != null) { // p har et høyrebarn
         sb.append(p.verdi).append(", ");
         p = p.høyre;
-        System.out.println("Høyre!");
       }
 
       else if (p.venstre != null) { //  p har et venstrebarn
         sb.append(p.verdi).append(", ");
         p = p.venstre;
-        System.out.println("Venstre!");
       }
     }
 
@@ -410,13 +408,45 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
   public String lengstGren() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
     //Skal returnere en tegnstreng med grenens verdier. Skal være innrammet med [] og separert med komma+" ".
     //hvis treet er tomt, altså ingen grener, da skal kun [] returneres.
     //b) denne skal gi den lengste grenen, dvs. grenen som ender i den bladnoden som ligger lengst ned i treet.
     //hvis flere lengste grener, skal den som ligger lengst til venstre returneres.
     //Pass på at hvis treet kun har én gren skal denne både være høyre gren og lengste gren.
     //Dette gjelder også hvis treet kun har én node, dette er da en gren.
+
+    if (tom()) {
+      return "[]";
+    }
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
+
+    //Putte inn masse fint i sb :)
+
+    Node<T> p = rot;
+
+    while(p.verdi != null){
+
+      if (p.venstre == null && p.høyre == null) { // p er en bladnode
+        sb.append(p.verdi);
+        break;
+      }
+
+      if (p.venstre != null) { //  p har et venstrebarn
+        sb.append(p.verdi).append(", ");
+        p = p.venstre;
+      }
+
+      if (p.høyre != null) { // p har et høyrebarn
+        sb.append(p.verdi).append(", ");
+        p = p.høyre;
+      }
+    }
+
+    sb.append("]");
+
+    return sb.toString();
   }
   
   public String[] grener() {

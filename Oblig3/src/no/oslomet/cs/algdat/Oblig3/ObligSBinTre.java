@@ -258,7 +258,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
     // returnerer den noden som kommer etter p i inorden
 
 
-
     // Hvis p har et høyre subtre, da vil den neste i inorden være den noden som ligger lengst ned til venstre i det subtreet
       if(p.høyre != null){
          p = p.høyre; // hopper til høyre subtre
@@ -379,9 +378,48 @@ public class ObligSBinTre<T> implements Beholder<T> {
   public String[] grener() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
-  
+
   public String bladnodeverdier() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if (tom()) {
+      return "[]";
+    }
+
+    ArrayList<T> bladnodeListe = new ArrayList<>(); //oppretter listen som brukes til å oppbevare alle bladnodene
+
+    bladnoder(rot, bladnodeListe); //finner alle bladnodene og lagrer de i hver sin String
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
+
+    int teller = 0;
+    for (T verdi : bladnodeListe) { //går igjennom hvert element i listen og legger dem inn i sb
+      teller++;
+      if(teller == bladnodeListe.size()){
+        sb.append(verdi.toString());
+      }
+      else{
+        sb.append(verdi.toString()).append(", ");
+      }
+    }
+
+    sb.append("]");
+
+    return sb.toString();
+  }
+
+  //hjelpemetode som brukes til å finne bladnodene i alle subtrærne til p og legger de til i en ArrayList
+  private void bladnoder(Node<T> p, List<T> bladnodeListe) {
+    if (p.venstre == null && p.høyre == null) { // tilfelle 1: p er en bladnode
+      bladnodeListe.add(p.verdi);
+    }
+
+    if (p.venstre != null) { // tilfelle 2: p har et venstrebarn
+      bladnoder(p.venstre, bladnodeListe);
+    }
+
+    if (p.høyre != null) { // tilfelle 3: p har et høyrebarn
+      bladnoder(p.høyre, bladnodeListe);
+    }
   }
   
   public String postString() {

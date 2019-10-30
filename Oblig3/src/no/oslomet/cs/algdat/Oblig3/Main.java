@@ -53,5 +53,9 @@ public class Main {
         System.out.println("Oppgave 4");
         System.out.println("omvendtString: " + tre2.omvendtString()); // Utskrift: [10, 9, 8, 7, 7, 6, 4, 4, 4, 2, 1]
 
+        //Oppgave 8a:
+        System.out.println("Oppgave 8a:");
+        System.out.println(tre.bladnodeverdier()); //Utskrift: [D, G, K, N, Q, S]
+
     }
 }

@@ -115,7 +115,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
       if (p == null) return false;   // finner ikke verdi
 
-      if (p.venstre == null || p.høyre == null){  // Tilfelle 1) og 2)
+      if (p.venstre == null || p.høyre == null){  // p har 1 eller ingen barn
           Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
 
           if(b != null){
@@ -142,12 +142,14 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
           p.verdi = r.verdi;   // kopierer verdien i r til p
 
+          if (r.høyre != null) {
+              r.høyre.forelder = s;
+          }
           if (s != p) {
-              s.venstre = r.høyre;  // Antar at r.høyre er lik null her
-              s.forelder = p;
+              s.venstre = r.høyre;
           }
           else {
-              s.høyre = r.høyre;  // Antar at r.høyre er lik null her
+              s.høyre = r.høyre;
           }
       }
 

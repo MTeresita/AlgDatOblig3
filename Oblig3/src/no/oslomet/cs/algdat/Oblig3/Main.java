@@ -53,5 +53,12 @@ public class Main {
         System.out.println("Oppgave 4");
         System.out.println("omvendtString: " + tre2.omvendtString()); // Utskrift: [10, 9, 8, 7, 7, 6, 4, 4, 4, 2, 1]
 
+        //Oppgave 6
+        System.out.println("Oppgave 6");
+        ObligSBinTre<Character> tre3 = new ObligSBinTre<>(Comparator.naturalOrder());
+        char[] verdier = "IATBHJCRSOFELKGDMPQN".toCharArray();
+        for(char poop : verdier) tre3.leggInn(poop);
+        System.out.println(tre3.høyreGren());
+        // Utskrift: [I, T, J, R, S]
     }
 }

@@ -376,10 +376,36 @@ public class ObligSBinTre<T> implements Beholder<T> {
       return "[]";
     }
 
-    else{
-      
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
 
+    //Putte inn masse fint i sb :)
+
+    Node<T> p = rot;
+
+    while(p.verdi != null){
+
+      if (p.venstre == null && p.høyre == null) { // p er en bladnode
+        sb.append(p.verdi);
+        break;
+      }
+
+      else if (p.høyre != null) { // p har et høyrebarn
+        sb.append(p.verdi).append(", ");
+        p = p.høyre;
+        System.out.println("Høyre!");
+      }
+
+      else if (p.venstre != null) { //  p har et venstrebarn
+        sb.append(p.verdi).append(", ");
+        p = p.venstre;
+        System.out.println("Venstre!");
+      }
     }
+
+    sb.append("]");
+
+    return sb.toString();
 
   }
   

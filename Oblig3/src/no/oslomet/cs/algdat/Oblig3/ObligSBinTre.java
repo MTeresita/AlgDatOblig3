@@ -367,11 +367,30 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
   public String høyreGren() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    //Skal returnere en tegnstreng med grenens verdier. Skal være innrammet med [] og separert med komma+" ".
+    //hvis treet er tomt, altså ingen grener, da skal kun [] returneres.
+    //a) denne metoden skal gi den grenen som ender i den bladnoden som ligger lengst til høyre.
+    //Pass på at hvis treet kun har én gren skal denne både være høyre gren og lengste gren.
+    //Dette gjelder også hvis treet kun har én node, dette er da en gren.
+    if (tom()) {
+      return "[]";
+    }
+
+    else{
+      
+
+    }
+
   }
   
   public String lengstGren() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
+    //Skal returnere en tegnstreng med grenens verdier. Skal være innrammet med [] og separert med komma+" ".
+    //hvis treet er tomt, altså ingen grener, da skal kun [] returneres.
+    //b) denne skal gi den lengste grenen, dvs. grenen som ender i den bladnoden som ligger lengst ned i treet.
+    //hvis flere lengste grener, skal den som ligger lengst til venstre returneres.
+    //Pass på at hvis treet kun har én gren skal denne både være høyre gren og lengste gren.
+    //Dette gjelder også hvis treet kun har én node, dette er da en gren.
   }
   
   public String[] grener() {

@@ -424,25 +424,31 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
     //Putte inn masse fint i sb :)
 
-    Node<T> p = rot;
+    Stakk<Node<T>> nodeStakk = new TabellStakk<>();
+    nodeStakk.leggInn(rot);
 
-    while(p.verdi != null){
+    Node<T> p;
 
-      if (p.venstre == null && p.høyre == null) { // p er en bladnode
-        sb.append(p.verdi);
-        break;
+      while(!nodeStakk.tom()){
+          p = nodeStakk.taUt();
+
+          if (p.venstre == null && p.høyre == null) { // p er en bladnode
+              sb.append(p.verdi);
+              break;
+          }
+          if (p.høyre != null) { // p har et høyrebarn
+              nodeStakk.leggInn(p.høyre);
+              sb.append(p.verdi).append(", ");
+
+          }
+
+          else if (p.venstre != null) { //  p har et venstrebarn
+              nodeStakk.leggInn(p.venstre);
+              sb.append(p.verdi).append(", ");
+
+          }
+
       }
-
-      if (p.venstre != null) { //  p har et venstrebarn
-        sb.append(p.verdi).append(", ");
-        p = p.venstre;
-      }
-
-      if (p.høyre != null) { // p har et høyrebarn
-        sb.append(p.verdi).append(", ");
-        p = p.høyre;
-      }
-    }
 
     sb.append("]");
 

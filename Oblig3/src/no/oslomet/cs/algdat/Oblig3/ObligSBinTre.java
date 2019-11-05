@@ -436,22 +436,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
     private Node<T> p = rot, q = null;
     private boolean removeOK = false;
     private int iteratorendringer = endringer;
-    /*
-    Klassen ​BladnodeIterator​ er satt opp med instansvariabler og konstruktør.
-    Det er fullt mulig (og ikke vanskelig) å løse alt det spørres om uten at det legges inn
-    flere intansvariabler i iteratorklassen. Men hvis du skulle mene at det er lettere å få til dette ved
-    å bruke en hjelpestakk, så må du gjerne gjøre det. Metoden ​iterator()​ er ferdigkodet.
-    Lag konstruktøren ​private BladnodeIterator()​ og metoden ​public T next().
 
-    Konstruktøren skal sørge for å flytte pekeren ​p ​ til første bladnode, dvs. til den
-    som er lengst til venstre hvis det er flere bladnoder. Hvis treet er tomt, skal ikke ​p ​ endres.
-
-    Metoden ​next() ​ skal kaste en ​NoSuchElementException ​ hvis det ikke er flere bladnoder igjen.
-    Hvis ikke, skal den returnere en ​bladnodeverdi ​.
-    Bladnodeverdiene skal komme i rekkefølge fra venstre mot høyre.
-    Husk også på at ​endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig 2.
-
-     */
 
     private BladnodeIterator(){  // konstruktør
       //flytte pekeren ​p ​ til første bladnode, dvs. til den som er lengst til venstre hvis det er flere bladnoder
@@ -527,12 +512,31 @@ public class ObligSBinTre<T> implements Beholder<T> {
       return q.verdi;
     }
 
-
-    
     @Override
-    public void remove()
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+    public void remove() {
+        if(!removeOK){
+            throw new IllegalStateException("Ulovlig tilstand");
+        }
+        if(endringer != iteratorendringer) {
+            throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
+        }
+        
+
+
+        removeOK = false;
+        antall--; // minker med en verdi i treet
+        endringer++; // endring øker ved fjerning av node i treet
+        iteratorendringer++; // oppdaterer endring i iteratorklassen
+
+        // pekeren q skal ligge én bak p, når p i metoden next() flyttes til neste bladnode
+        // (eller til null hvis det var den siste), skal q peke på den som p pekte på
+        // m.a.o : det er noden som q peker på som skal fjernes - skal gjøres med direkte kode!
+        // ved next() - p.gamle er da q
+
+
+
+
+
     }
 
   } // BladnodeIterator

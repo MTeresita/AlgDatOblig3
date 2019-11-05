@@ -435,22 +435,95 @@ public class ObligSBinTre<T> implements Beholder<T> {
     private Node<T> p = rot, q = null;
     private boolean removeOK = false;
     private int iteratorendringer = endringer;
-    
+    /*
+    Klassen ​BladnodeIterator​ er satt opp med instansvariabler og konstruktør.
+    Det er fullt mulig (og ikke vanskelig) å løse alt det spørres om uten at det legges inn
+    flere intansvariabler i iteratorklassen. Men hvis du skulle mene at det er lettere å få til dette ved
+    å bruke en hjelpestakk, så må du gjerne gjøre det. Metoden ​iterator()​ er ferdigkodet.
+    Lag konstruktøren ​private BladnodeIterator()​ og metoden ​public T next().
+
+    Konstruktøren skal sørge for å flytte pekeren ​p ​ til første bladnode, dvs. til den
+    som er lengst til venstre hvis det er flere bladnoder. Hvis treet er tomt, skal ikke ​p ​ endres.
+
+    Metoden ​next() ​ skal kaste en ​NoSuchElementException ​ hvis det ikke er flere bladnoder igjen.
+    Hvis ikke, skal den returnere en ​bladnodeverdi ​.
+    Bladnodeverdiene skal komme i rekkefølge fra venstre mot høyre.
+    Husk også på at ​endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig 2.
+
+     */
+
     private BladnodeIterator()  // konstruktør
     {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+      //flytte pekeren ​p ​ til første bladnode, dvs. til den som er lengst til venstre hvis det er flere bladnoder
+      // Hvis treet er tomt, skal ikke ​p ​ endres
+
+      if(tom()){
+        return;
+      }
+
+      p = rot;
+      q = null;
+      removeOK = false;
+      iteratorendringer = endringer;
     }
-    
+
+
     @Override
     public boolean hasNext()
     {
       return p != null;  // Denne skal ikke endres!
     }
-    
+      // hjelpemetode for å finne første bladnode
+
+      //public void Node<T> finnForsteBladnode(Node<T> p){
+      public void skrivBladnoder(Node<T> p){
+        if(p == null){
+            return;
+        }
+
+        // Hvis node er bladnode returner node
+        if(p.venstre == null && p.høyre == null){
+            System.out.println(p.verdi + " ");
+            return;
+        }
+
+        // Hvis venstre node finnes, sjekk for bladnode
+          if(p.venstre != null){
+              skrivBladnoder(p.venstre);
+          }
+
+          // hvis høyre node finnes, sjekk for bladnode
+          if(p.høyre != null){
+              skrivBladnoder(p.høyre);
+          }
+      }
+
+      //hjelpemetode for å finne neste bladnode
+      public Node<T> finnNesteBladnode(Node<T> p){
+          return null;
+      }
+
     @Override
-    public T next()
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+    public T next() {
+        // NB! Endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig2
+        if(endringer != iteratorendringer){
+            throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
+        }
+
+        //kaste en ​NoSuchElementException ​hvis det ikke er flere bladnoder igjen
+        if(!hasNext()){
+            throw new NoSuchElementException("Ingen bladnoder igjen!");
+        }
+
+        // Hvis ikke, skal den returnere en ​bladnodeverdi.
+        removeOK = true;
+
+      // Bladnodeverdiene skal komme i rekkefølge fra venstre mot høyre
+      q = p;
+
+      return q.verdi;
+
+
     }
     
     @Override

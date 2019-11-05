@@ -153,7 +153,8 @@ public class ObligSBinTre<T> implements Beholder<T> {
           }
       }
 
-      antall--;   // det er nå én node mindre i treet
+      antall--;// det er nå én node mindre i treet
+      endringer++; // det er nå gjort en endring mer
       return true;
 
   }
@@ -461,19 +462,36 @@ public class ObligSBinTre<T> implements Beholder<T> {
       }
 
       p = rot;
-      q = null;
-      removeOK = false;
-      iteratorendringer = endringer;
+      q = rot;
 
-      // hjelpemetode for å finne første bladnode
-      while(!(p.høyre == null && p.venstre == null)){
+      //finner siste bladnode
+//      while(true){
+//        if(q.høyre != null){
+//          q = q.høyre;
+//        }
+//        else if(q.venstre != null){
+//          q = q.venstre;
+//        }
+//        else{
+//          break;
+//        }
+//      }
+
+      // finner første bladnode
+      while(true){
         if(p.venstre != null){
           p = p.venstre;
         }
         else if(p.høyre != null){
           p = p.høyre;
         }
+        else{
+          break;
+        }
       }
+
+      removeOK = false;
+      iteratorendringer = endringer;
     }
 
 
@@ -493,16 +511,36 @@ public class ObligSBinTre<T> implements Beholder<T> {
         throw new NoSuchElementException("Ingen bladnoder igjen!");
       }
 
-      while(!(p.høyre == null && p.venstre == null)){
-        nesteInorden(p);
+      removeOK = true;
+      q = p;
+
+      while (p.forelder != null && (p == p.forelder.høyre || p.forelder.høyre == null)) {
+        p = p.forelder;
+      }
+
+      if(p.forelder != null) {
+        p = p.forelder.høyre;
+
+        while (true) {
+          if (p.venstre != null) {
+            p = p.venstre;
+          } else if (p.høyre != null) {
+            p = p.høyre;
+          } else {
+            break;
+          }
+        }
+      }
+      else{
+        p = null;
       }
       // Hvis ikke, skal den returnere en ​bladnodeverdi.
-      removeOK = true;
-
-      return p.verdi;
 
 
+      return q.verdi;
     }
+
+
     
     @Override
     public void remove()

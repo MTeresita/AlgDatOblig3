@@ -153,7 +153,8 @@ public class ObligSBinTre<T> implements Beholder<T> {
           }
       }
 
-      antall--;   // det er nå én node mindre i treet
+      antall--;// det er nå én node mindre i treet
+      endringer++; // det er nå gjort en endring mer
       return true;
 
   }
@@ -593,28 +594,116 @@ public class ObligSBinTre<T> implements Beholder<T> {
     private Node<T> p = rot, q = null;
     private boolean removeOK = false;
     private int iteratorendringer = endringer;
-    
-    private BladnodeIterator()  // konstruktør
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+
+
+    private BladnodeIterator(){  // konstruktør
+      //flytte pekeren ​p ​ til første bladnode, dvs. til den som er lengst til venstre hvis det er flere bladnoder
+      // Hvis treet er tomt, skal ikke ​p ​ endres
+
+      if(tom()){
+        return;
+      }
+
+      p = rot;
+
+      // finner første bladnode
+      while(true){
+        if(p.venstre != null){
+          p = p.venstre;
+        }
+        else if(p.høyre != null){
+          p = p.høyre;
+        }
+        else{
+          break;
+        }
+      }
+
+      removeOK = false;
+      iteratorendringer = endringer;
     }
-    
+
+
     @Override
-    public boolean hasNext()
-    {
+    public boolean hasNext(){
       return p != null;  // Denne skal ikke endres!
     }
-    
+
     @Override
-    public T next()
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+    public T next() {
+      // NB! Endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig2
+      if(endringer != iteratorendringer){
+        throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
+      }
+      //kaste en ​NoSuchElementException ​hvis det ikke er flere bladnoder igjen
+      if(!hasNext()){
+        throw new NoSuchElementException("Ingen bladnoder igjen!");
+      }
+
+      //setter q  lik gamle p
+      q = p;
+
+      //traverserer til neste bladnode
+      while (p.forelder != null && (p == p.forelder.høyre || p.forelder.høyre == null)) {
+        p = p.forelder;
+      }
+
+      if(p.forelder != null) {
+        p = p.forelder.høyre;
+
+        while (true) {
+          if (p.venstre != null) {
+            p = p.venstre;
+          } else if (p.høyre != null) {
+            p = p.høyre;
+          } else {
+            break;
+          }
+        }
+      }
+      else{
+        p = null;
+      }
+      //setter removeOK til true, så det den kan fjernes av remove()
+      removeOK = true;
+      // Hvis ikke, skal den returnere en ​bladnodeverdi.
+      return q.verdi;
     }
-    
+
     @Override
-    public void remove()
-    {
-      throw new UnsupportedOperationException("Ikke kodet ennå!");
+    public void remove() {
+        if(!removeOK){
+            throw new IllegalStateException("Ulovlig tilstand");
+        }
+        if(endringer != iteratorendringer) {
+            throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
+        }
+        if (q != null) {
+          if (q.forelder != null) {
+            if (q.forelder.venstre != null && q == q.forelder.venstre) {
+              q.forelder.venstre = null;
+            } else if (q.forelder.høyre != null && q == q.forelder.høyre) {
+              q.forelder.høyre = null;
+            }
+            q = null;
+          }
+        }
+
+
+        removeOK = false;
+        antall--; // minker med en verdi i treet
+        endringer++; // endring øker ved fjerning av node i treet
+        iteratorendringer++; // oppdaterer endring i iteratorklassen
+
+        // pekeren q skal ligge én bak p, når p i metoden next() flyttes til neste bladnode
+        // (eller til null hvis det var den siste), skal q peke på den som p pekte på
+        // m.a.o : det er noden som q peker på som skal fjernes - skal gjøres med direkte kode!
+        // ved next() - p.gamle er da q
+
+
+
+
+
     }
 
   } // BladnodeIterator

@@ -452,8 +452,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
      */
 
-    private BladnodeIterator()  // konstruktør
-    {
+    private BladnodeIterator(){  // konstruktør
       //flytte pekeren ​p ​ til første bladnode, dvs. til den som er lengst til venstre hvis det er flere bladnoder
       // Hvis treet er tomt, skal ikke ​p ​ endres
 
@@ -465,63 +464,42 @@ public class ObligSBinTre<T> implements Beholder<T> {
       q = null;
       removeOK = false;
       iteratorendringer = endringer;
+
+      // hjelpemetode for å finne første bladnode
+      while(!(p.høyre == null && p.venstre == null)){
+        if(p.venstre != null){
+          p = p.venstre;
+        }
+        else if(p.høyre != null){
+          p = p.høyre;
+        }
+      }
     }
 
 
     @Override
-    public boolean hasNext()
-    {
+    public boolean hasNext(){
       return p != null;  // Denne skal ikke endres!
     }
-      // hjelpemetode for å finne første bladnode
-
-      //public void Node<T> finnForsteBladnode(Node<T> p){
-      public void skrivBladnoder(Node<T> p){
-        if(p == null){
-            return;
-        }
-
-        // Hvis node er bladnode returner node
-        if(p.venstre == null && p.høyre == null){
-            System.out.println(p.verdi + " ");
-            return;
-        }
-
-        // Hvis venstre node finnes, sjekk for bladnode
-          if(p.venstre != null){
-              skrivBladnoder(p.venstre);
-          }
-
-          // hvis høyre node finnes, sjekk for bladnode
-          if(p.høyre != null){
-              skrivBladnoder(p.høyre);
-          }
-      }
-
-      //hjelpemetode for å finne neste bladnode
-      public Node<T> finnNesteBladnode(Node<T> p){
-          return null;
-      }
 
     @Override
     public T next() {
-        // NB! Endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig2
-        if(endringer != iteratorendringer){
-            throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
-        }
+      // NB! Endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig2
+      if(endringer != iteratorendringer){
+        throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
+      }
+      //kaste en ​NoSuchElementException ​hvis det ikke er flere bladnoder igjen
+      if(!hasNext()){
+        throw new NoSuchElementException("Ingen bladnoder igjen!");
+      }
 
-        //kaste en ​NoSuchElementException ​hvis det ikke er flere bladnoder igjen
-        if(!hasNext()){
-            throw new NoSuchElementException("Ingen bladnoder igjen!");
-        }
+      while(!(p.høyre == null && p.venstre == null)){
+        nesteInorden(p);
+      }
+      // Hvis ikke, skal den returnere en ​bladnodeverdi.
+      removeOK = true;
 
-        // Hvis ikke, skal den returnere en ​bladnodeverdi.
-        removeOK = true;
-
-      // Bladnodeverdiene skal komme i rekkefølge fra venstre mot høyre
-      q = p;
-
-      return q.verdi;
+      return p.verdi;
 
 
     }

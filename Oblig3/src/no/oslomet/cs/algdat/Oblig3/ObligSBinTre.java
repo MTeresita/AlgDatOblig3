@@ -1,6 +1,13 @@
 package no.oslomet.cs.algdat.Oblig3;
 
 ////////////////// ObligSBinTre /////////////////////////////////
+/*
+ * Maria Teresita Halvorsen : s326325
+ * Signe Aanderaa Eide : s333781
+ * Camilla Hoelgaard : s333783
+ * Ana-Maria Poljac : s333745
+ * Christian Dyrli: s333738
+ * */
 
 import java.util.*;
 
@@ -631,7 +638,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
     @Override
     public T next() {
-      // NB! Endringer ​ og ​iteratorendringer ​ skal brukes som i Oblig2
       if(endringer != iteratorendringer){
         throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
       }
@@ -643,7 +649,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
       //setter q lik p, saa vi ikke mister peker til p naar p forandres
       q = p;
 
-      //traverserer til neste bladnode
+      //traverserer til neste bladnode og inn i neste gren eller subgren
       while (p.forelder != null && (p == p.forelder.hoyre || p.forelder.hoyre == null)) {
         p = p.forelder;
       }
@@ -651,6 +657,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
       if(p.forelder != null) {
         p = p.forelder.hoyre;
 
+        // traverserer nedover mot riktig bladnode
         while (true) {
           if (p.venstre != null) {
             p = p.venstre;

@@ -2,7 +2,6 @@ package no.oslomet.cs.algdat.Oblig3;
 
 ////////////////// ObligSBinTre /////////////////////////////////
 
-import javax.xml.soap.Node;
 import java.util.*;
 
 public class ObligSBinTre<T> implements Beholder<T> {

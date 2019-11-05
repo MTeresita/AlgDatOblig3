@@ -521,13 +521,14 @@ public class ObligSBinTre<T> implements Beholder<T> {
             throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
         }
         if (q != null) {
-          if (q.forelder.venstre != null && q == q.forelder.venstre) {
-            q.forelder.venstre = null;
+          if (q.forelder != null) {
+            if (q.forelder.venstre != null && q == q.forelder.venstre) {
+              q.forelder.venstre = null;
+            } else if (q.forelder.høyre != null && q == q.forelder.høyre) {
+              q.forelder.høyre = null;
+            }
+            q = null;
           }
-          else if (q.forelder.høyre != null && q == q.forelder.høyre) {
-            q.forelder.høyre = null;
-          }
-          q = null;
         }
 
 

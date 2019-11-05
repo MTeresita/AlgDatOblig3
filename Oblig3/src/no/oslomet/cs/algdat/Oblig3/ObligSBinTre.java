@@ -449,14 +449,16 @@ public class ObligSBinTre<T> implements Beholder<T> {
     return stackB.toString();
   }
 
-
   public String[] grener() {
+    if(tom()){
+      return new String [0];
+    }
+
     List<String> grenListe = new ArrayList<>();
 
     grener(rot, grenListe);
 
     String [] grener = new String[grenListe.size()];
-    System.out.println(grenListe.size());
 
     //Legger inn elementene fra en liste til en annen.
     for(int i = 0; i < grener.length; i++){
@@ -472,14 +474,15 @@ public class ObligSBinTre<T> implements Beholder<T> {
       nodeListe.add(gren(p));
     }
 
-    else if (p.venstre != null) { // tilfelle 2: p har et venstrebarn
+    if (p.venstre != null) { // tilfelle 2: p har et venstrebarn
       grener(p.venstre, nodeListe);
     }
 
-    else if (p.høyre != null) { // tilfelle 3: p har et høyrebarn
+    if (p.høyre != null) { // tilfelle 3: p har et høyrebarn
       grener(p.høyre, nodeListe);
     }
   }
+
 
   public String bladnodeverdier() {
     if (tom()) {

@@ -36,7 +36,7 @@ public class Main {
         System.out.println("------------------------------");
 
         //Oppgave 3
-        int[] c = {4, 7, 2, 9, 4, 10, 8, 7, 4, 6, 1};
+        int[] c = {4, 7, 2, 9, 4, 10, 8, 7, 4, 6};
         ObligSBinTre<Integer> tre2 = new ObligSBinTre<>(Comparator.naturalOrder());
 
         for (int verdi : c) {
@@ -56,6 +56,10 @@ public class Main {
         //Oppgave 8a:
         System.out.println("Oppgave 8a:");
         System.out.println(tre.bladnodeverdier()); //Utskrift: [D, G, K, N, Q, S]
+
+        //Oppgave 8b:
+        System.out.println("Oppgave 8b:");
+        System.out.println(tre2.postString()); //[D, E, G, F, C, H, B, A, K, N, M, L, Q, P, O, S, R, J, T, I]
 
     }
 }

@@ -2,6 +2,7 @@ package no.oslomet.cs.algdat.Oblig3;
 
 ////////////////// ObligSBinTre /////////////////////////////////
 
+import javax.xml.soap.Node;
 import java.util.*;
 
 public class ObligSBinTre<T> implements Beholder<T> {
@@ -423,9 +424,62 @@ public class ObligSBinTre<T> implements Beholder<T> {
   }
   
   public String postString() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if (tom()) {
+      return "[]";
+    }
+
+    Node<T> p = førsteBladnode(rot);
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("[").append(p.verdi); //Legger inn første bladnode lengst til venstre
+
+    while (p.forelder != null) { //stopper løkken når vi kommer tilbake til roten
+      p = neste(p); //setter p lik den neste noden i Postorden
+      sb.append(", ").append(p.verdi);
+    }
+
+    sb.append("]");
+
+    return sb.toString();
   }
-  
+
+  //Hjelpemetode til postString
+  private Node<T> førsteBladnode(Node<T> p) {
+
+    while (true) {
+      if (p.venstre != null) { //så langt til venstre det går
+        p = p.venstre;
+      }
+      else if (p.høyre != null) { //om det er tomt for venstrebarn går man én gang til høyre
+        p = p.høyre;
+      }
+      else //ingen flere barn, node funnet
+        break;
+    }
+    return p;
+  }
+
+  //Hjelpemetode til postString
+  private Node<T> neste(Node<T> p) {
+    Node<T> q = p.forelder; //forelserenode
+
+    //Hvis q ikke har et høyrebarn, går opp til forelder
+    if (q.høyre == null) {
+      p = q;
+    }
+    //Hvis p er høyrebarnet til q, går opp til forelder
+    else if(p == q.høyre){
+      p = q;
+    }
+
+    //p er venstrebarn og q.høyrebarn finnes. Går videre til høyrebarnet
+    else{
+      p = førsteBladnode(q.høyre);
+    }
+    return p;
+  }
+
+
   @Override
   public Iterator<T> iterator() {
     return new BladnodeIterator();

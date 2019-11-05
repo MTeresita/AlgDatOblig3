@@ -462,20 +462,6 @@ public class ObligSBinTre<T> implements Beholder<T> {
       }
 
       p = rot;
-      q = rot;
-
-      //finner siste bladnode
-//      while(true){
-//        if(q.høyre != null){
-//          q = q.høyre;
-//        }
-//        else if(q.venstre != null){
-//          q = q.venstre;
-//        }
-//        else{
-//          break;
-//        }
-//      }
 
       // finner første bladnode
       while(true){
@@ -511,9 +497,10 @@ public class ObligSBinTre<T> implements Beholder<T> {
         throw new NoSuchElementException("Ingen bladnoder igjen!");
       }
 
-      removeOK = true;
+      //setter q  lik gamle p
       q = p;
 
+      //traverserer til neste bladnode
       while (p.forelder != null && (p == p.forelder.høyre || p.forelder.høyre == null)) {
         p = p.forelder;
       }
@@ -534,9 +521,9 @@ public class ObligSBinTre<T> implements Beholder<T> {
       else{
         p = null;
       }
+      //setter removeOK til true, så det den kan fjernes av remove()
+      removeOK = true;
       // Hvis ikke, skal den returnere en ​bladnodeverdi.
-
-
       return q.verdi;
     }
 

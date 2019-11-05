@@ -640,7 +640,7 @@ public class ObligSBinTre<T> implements Beholder<T> {
         throw new NoSuchElementException("Ingen bladnoder igjen!");
       }
 
-      //setter q  lik gamle p
+      //setter q lik p, så vi ikke mister peker til p når p forandres
       q = p;
 
       //traverserer til neste bladnode
@@ -678,6 +678,8 @@ public class ObligSBinTre<T> implements Beholder<T> {
         if(endringer != iteratorendringer) {
             throw new ConcurrentModificationException("Endringer og iteratorendringer er forskjellige!");
         }
+        // Dersom q ikke er null og q sin forelder ikke er lik null,
+        // slettes pekeren fra forelderen til q, og pekeren til q
         if (q != null) {
           if (q.forelder != null) {
             if (q.forelder.venstre != null && q == q.forelder.venstre) {
@@ -689,21 +691,10 @@ public class ObligSBinTre<T> implements Beholder<T> {
           }
         }
 
-
         removeOK = false;
         antall--; // minker med en verdi i treet
         endringer++; // endring øker ved fjerning av node i treet
         iteratorendringer++; // oppdaterer endring i iteratorklassen
-
-        // pekeren q skal ligge én bak p, når p i metoden next() flyttes til neste bladnode
-        // (eller til null hvis det var den siste), skal q peke på den som p pekte på
-        // m.a.o : det er noden som q peker på som skal fjernes - skal gjøres med direkte kode!
-        // ved next() - p.gamle er da q
-
-
-
-
-
     }
 
   } // BladnodeIterator

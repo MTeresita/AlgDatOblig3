@@ -2,6 +2,7 @@ package no.oslomet.cs.algdat.Oblig3;
 
 ////////////////// ObligSBinTre /////////////////////////////////
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class ObligSBinTre<T> implements Beholder<T> {
@@ -406,64 +407,85 @@ public class ObligSBinTre<T> implements Beholder<T> {
     return sb.toString();
 
   }
-  
-  public String lengstGren() {
-    //Skal returnere en tegnstreng med grenens verdier. Skal være innrammet med [] og separert med komma+" ".
-    //hvis treet er tomt, altså ingen grener, da skal kun [] returneres.
-    //b) denne skal gi den lengste grenen, dvs. grenen som ender i den bladnoden som ligger lengst ned i treet.
-    //hvis flere lengste grener, skal den som ligger lengst til venstre returneres.
-    //Pass på at hvis treet kun har én gren skal denne både være hoyre gren og lengste gren.
-    //Dette gjelder også hvis treet kun har én node, dette er da en gren.
 
-    if (tom()) {
+  public String lengstGren() {
+    //henter mye av denne metoden fra kompendiet. Programkode 5.1.6 a)
+    if (tom())
       return "[]";
+
+    Deque<Node<T>> kø = new ArrayDeque<>();
+    //Legger til rot-noden sist
+    kø.addLast(rot);
+
+    //Oppretter en tom node
+    Node<T> p = null;
+
+    while (!kø.isEmpty()) { //while-loop som går igjennom treet i nivåorden. Når loopen stopper er p lik den siste verdien i treet.
+
+      p = kø.removeFirst();
+
+      if (p.hoyre != null)
+        kø.addLast(p.hoyre);
+      if (p.venstre != null)
+        kø.addLast(p.venstre);
     }
 
-    StringBuilder sb = new StringBuilder();
-    sb.append("[");
-
-    //Putte inn masse fint i sb :)
-
-    Stakk<Node<T>> nodeStakk = new TabellStakk<>();
-    nodeStakk.leggInn(rot);
-
-    Node<T> p;
-
-
-      while(!nodeStakk.tom()){
-          p = nodeStakk.taUt();
-
-          if (p.venstre == null && p.hoyre == null) { // p er en bladnode
-              sb.append(p.verdi);
-              break;
-          }
-          if (p.hoyre != null) { // p har et høyrebarn
-              nodeStakk.leggInn(p.hoyre);
-              sb.append(p.verdi).append(", ");
-
-          }
-
-          else if (p.venstre != null) { //  p har et venstrebarn
-              nodeStakk.leggInn(p.venstre);
-              sb.append(p.verdi).append(", ");
-
-          }
-
-      }
-
-    sb.append("]");
-
-    return sb.toString();
+    return gren(p); //kaller hjelpemetoden gren for å få grenen som en streng.
   }
-  
+
+  private <T> String gren(Node<T> p) {
+
+    Stack<T> stackA = new Stack<>();
+    Stack<T> stackB = new Stack<>();
+
+    while (p != null) { //legger p og alle dens foreldrenoder opp til rotnoden (altså hele grenen) på stack A
+      stackA.push(p.verdi);
+      p = p.forelder;
+    }
+
+    while (!stackA.isEmpty()) { //flytter grenen til Stack B, og dermed snur rekkefølgen.
+      stackB.push(stackA.pop());
+    }
+
+    return stackB.toString();
+  }
+
+
   public String[] grener() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    List<String> grenListe = new ArrayList<>();
+
+    grener(rot, grenListe);
+
+    String [] grener = new String[grenListe.size()];
+    System.out.println(grenListe.size());
+
+    //Legger inn elementene fra en liste til en annen.
+    for(int i = 0; i < grener.length; i++){
+      grener[i] = grenListe.get(i);
+    }
+
+    return grener;
   }
-  
+
+  //hjelpemetode som brukes til å finne nodene i alle subtrærne til p og legger de til i en ArrayList
+  private void grener(Node<T> p, List<String> nodeListe) {
+    if (p.venstre == null && p.hoyre == null) { // tilfelle 1: p er en bladnode
+      nodeListe.add(gren(p));
+    }
+
+    else if (p.venstre != null) { // tilfelle 2: p har et venstrebarn
+      grener(p.venstre, nodeListe);
+    }
+
+    else if (p.hoyre != null) { // tilfelle 3: p har et høyrebarn
+      grener(p.hoyre, nodeListe);
+    }
+  }
+
   public String bladnodeverdier() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }
-  
+
   public String postString() {
     throw new UnsupportedOperationException("Ikke kodet ennå!");
   }

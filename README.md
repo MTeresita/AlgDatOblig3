@@ -11,8 +11,8 @@ Oppgaven er levert av følgende studenter:
 # Arbeidsfordeling
 
 I oppgaven har vi hatt følgende arbeidsfordeling:
-* Maria har jobbet på oppgave 1, 2, 3, 4
-* Signe har jobbet på oppgave 5, 8a
-* Camilla har jobbet på oppgave 
+* Maria har jobbet på oppgave 1, 2, 3, 4, 6
+* Signe har jobbet på oppgave 5, 6, 7, 8
+* Camilla har jobbet på oppgave 5, 6
 * Ana-Maria har jobbet på oppgave 3, 4
 * Christian har jobbet på oppgave 3, 4 

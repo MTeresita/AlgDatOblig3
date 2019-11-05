@@ -366,17 +366,119 @@ public class ObligSBinTre<T> implements Beholder<T> {
 
     return sb.toString();
   }
-  
   public String høyreGren() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    //Skal returnere en tegnstreng med grenens verdier. Skal være innrammet med [] og separert med komma+" ".
+    //hvis treet er tomt, altså ingen grener, da skal kun [] returneres.
+    //a) denne metoden skal gi den grenen som ender i den bladnoden som ligger lengst til hoyre.
+    //Pass på at hvis treet kun har én gren skal denne både være hoyre gren og lengste gren.
+    //Dette gjelder også hvis treet kun har én node, dette er da en gren.
+    if (tom()) {
+      return "[]";
+    }
+
+    StringBuilder sb = new StringBuilder();
+    sb.append("[");
+
+    //Putte inn masse fint i sb :)
+
+    Node<T> p = rot;
+
+    while(p.verdi != null){
+
+      if (p.venstre == null && p.høyre == null) { // p er en bladnode
+        sb.append(p.verdi);
+        break;
+      }
+
+      else if (p.høyre != null) { // p har et høyrebarn
+        sb.append(p.verdi).append(", ");
+        p = p.høyre;
+      }
+
+      else if (p.venstre != null) { //  p har et venstrebarn
+        sb.append(p.verdi).append(", ");
+        p = p.venstre;
+      }
+    }
+
+    sb.append("]");
+
+    return sb.toString();
+
   }
-  
+
   public String lengstGren() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    //henter mye av denne metoden fra kompendiet. Programkode 5.1.6 a)
+    if (tom())
+      return "[]";
+
+    Deque<Node<T>> kø = new ArrayDeque<>();
+    //Legger til rot-noden sist
+    kø.addLast(rot);
+
+    //Oppretter en tom node
+    Node<T> p = null;
+
+    while (!kø.isEmpty()) { //while-loop som går igjennom treet i nivåorden. Når loopen stopper er p lik den siste verdien i treet.
+
+      p = kø.removeFirst();
+
+      if (p.høyre != null)
+        kø.addLast(p.høyre);
+      if (p.venstre != null)
+        kø.addLast(p.venstre);
+    }
+
+    return gren(p); //kaller hjelpemetoden gren for å få grenen som en streng.
   }
-  
+
+  private <T> String gren(Node<T> p) {
+
+    Stack<T> stackA = new Stack<>();
+    Stack<T> stackB = new Stack<>();
+
+    while (p != null) { //legger p og alle dens foreldrenoder opp til rotnoden (altså hele grenen) på stack A
+      stackA.push(p.verdi);
+      p = p.forelder;
+    }
+
+    while (!stackA.isEmpty()) { //flytter grenen til Stack B, og dermed snur rekkefølgen.
+      stackB.push(stackA.pop());
+    }
+
+    return stackB.toString();
+  }
+
+
   public String[] grener() {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    List<String> grenListe = new ArrayList<>();
+
+    grener(rot, grenListe);
+
+    String [] grener = new String[grenListe.size()];
+    System.out.println(grenListe.size());
+
+    //Legger inn elementene fra en liste til en annen.
+    for(int i = 0; i < grener.length; i++){
+      grener[i] = grenListe.get(i);
+    }
+
+    return grener;
+  }
+
+  //hjelpemetode som brukes til å finne nodene i alle subtrærne til p og legger de til i en ArrayList
+  private void grener(Node<T> p, List<String> nodeListe) {
+    if (p.venstre == null && p.høyre == null) { // tilfelle 1: p er en bladnode
+      nodeListe.add(gren(p));
+    }
+
+    else if (p.venstre != null) { // tilfelle 2: p har et venstrebarn
+      grener(p.venstre, nodeListe);
+    }
+
+    else if (p.høyre != null) { // tilfelle 3: p har et høyrebarn
+      grener(p.høyre, nodeListe);
+    }
   }
 
   public String bladnodeverdier() {
